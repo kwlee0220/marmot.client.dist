@@ -1,0 +1,1 @@
+java -cp %MARMOT_CLIENT_HOME%/bin/marmot.client.jar marmot.geo.command.ImportShapefile -host %MARMOT_HOST% %*
