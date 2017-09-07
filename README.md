@@ -8,7 +8,7 @@
 <pre><code>$ cd
 $ mkdir marmot
 </code></pre>
-https://github.com/kwlee0220/marmot.client.dist
+
 2. 압축을 풀어 생성된 디렉토리를 생성된 곳을 이동시킨다.
 <pre><code>$ cd marmot</code></pre>
 
