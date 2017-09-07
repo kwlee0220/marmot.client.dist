@@ -3,12 +3,12 @@
 ### 1. 설치 사전 조건
 * Oracle Java를 (Java8 이상) 설치되어 있어야 한다.
 
-### 2. 클라이언트 라이브러리 설치 절차
+### 2. 클라이언트 실행파일 설치 절차
 1. Home 디렉토리 아래에 'marmot'이라는 디렉토리를 생성한다.
 <pre><code>$ cd
 $ mkdir marmot
 </code></pre>
-
+https://github.com/kwlee0220/marmot.client.dist
 2. 압축을 풀어 생성된 디렉토리를 생성된 곳을 이동시킨다.
 <pre><code>$ cd marmot</code></pre>
 
