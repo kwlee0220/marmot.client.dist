@@ -29,7 +29,5 @@ export MARMOT_CLIENT_HOME=$HOME/marmot/marmot.client.dist
 export PATH=$PATH:$MARMOT_CLIENT_HOME/bin/linux
 </code></pre>
 
-6. `$HOME/marmot/marmot.client.dist/bin` 디렉토리에 있는 클라이언트 스크립트들 중 `mc_dir`을 수행시켜 서버 접속 여부를 확인한다.
-<pre><code>$ cd $HOME/marmot/marmot.client.dist/bin
-$ mc_dir
-</code></pre>
+6. `$HOME/marmot/marmot.client.dist/bin/linux` 디렉토리에 있는 클라이언트 스크립트들 중 `mc_dir`을 수행시켜 서버 접속 여부를 확인한다.
+<pre><code>$ mc_dir</code></pre>
