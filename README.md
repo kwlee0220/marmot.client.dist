@@ -21,6 +21,11 @@ Download받은 zip 파일 (`marmot.client.dist-master.zip`)의 압축을 풀고,
 $ mv marmot.client.dist-master marmot.client.dist
 </code></pre>
 
+'$HOME/marmot/marmot.client.dist/bin' 디렉토리로 이동하고, jar 파일에 대한 symbolic link를 생성한다.
+<pre><code>$ cd $HOME/marmot/marmot.client.dist/bin
+$ ln -s marmot.client-1.1-all.jar marmot.client.jar
+</code></pre>
+
 서버의 접속 정보를 설정할 환경변수를 설정한다. 로그인 때마다 동일한 작업을 반복하지 않기 위해 설정명령을
 `.bash_profile` 또는 `.bashrc` 등에 기록할 수 있다.
 <pre><code>export MARMOT_HOST=[marmot server IP]
