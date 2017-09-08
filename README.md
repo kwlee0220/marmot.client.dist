@@ -32,7 +32,7 @@ export PATH=$PATH:$MARMOT_CLIENT_HOME/bin/linux
 
 `$HOME/marmot/marmot.client.dist/bin/linux` 디렉토리에 있는 클라이언트 스크립트들 중 `mc_dir` 또는
 `mc_explorer`을 수행시켜 서버 접속 여부를 확인한다.
->`$ mc_dir`
+>`$ mc_dir` </br>
 >`$ mc_explorer`
 
 [Marmot 서버 배포본](https://github.com/kwlee0220/marmot.server.dist) 에 기술된 샘플 공간 데이터 파일을
