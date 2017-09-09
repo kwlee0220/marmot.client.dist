@@ -16,9 +16,8 @@ GitHub에서 Marmot client 배포판을 download하여 압축을 풀고, 이때 
 	이때는 `marmot.client.dist` 디렉토리 생성하고 이 디렉토리에서 압축을 해제한다.
 
 생성된 `marmot.client.dist` 하위의 bin 디렉토리로 이동하고, jar 파일에 대한 symbolic link를 생성한다.
-<pre><code>$ ln -s marmot.client-1.1-all.jar marmot.client.jar (Linux 경우)
-C:\marmot\marmot.client.dist\bin mklink marmot.client.jar marmot.client-1.1-all.jar (Windows 경우)
-</code></pre>
+>`$ ln -s marmot.client-1.1-all.jar marmot.client.jar` *(Linux 경우)*</br>
+> `C:\marmot\marmot.client.dist\bin> mklink marmot.client.jar marmot.client-1.1-all.jar` *(Windows 경우)*
 
 서버의 접속 정보를 설정할 환경변수를 설정한다. Linux의 경우는 로그인 때마다 동일한 작업을
 반복하지 않기 위해 설정명령을 `.bash_profile` 또는 `.bashrc` 등에 기록할 수 있다.
@@ -28,6 +27,7 @@ export MARMOT_CLIENT_HOME=$HOME/marmot/marmot.client.dist
 
 export PATH=$PATH:$MARMOT_CLIENT_HOME/bin/linux
 </code></pre>
+Windows의 경우는 `PATH` 환경변수의 값으로 `$MARMOT_CLIENT_HOME/bin/windows`을 설정한다.
 
 `$HOME/marmot/marmot.client.dist/bin/linux` 디렉토리에 있는 클라이언트 스크립트들 중 `mc_dir` 또는
 `mc_explorer`을 수행시켜 서버 접속 여부를 확인한다.
