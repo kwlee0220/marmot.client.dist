@@ -58,10 +58,9 @@
 지정된 dataset를 shapefile 형식으로 export 시킨다.
 만일 `-r` 옵션이 주어진 경우는 인자는 대상 디렉토리 경로명으로 간주되고,
 해당 디렉토리 아래에 있는 모든 데이터세트를 삭제한다.
-<pre><code>mc_delete [옵션들] <대상 dataset 경로 또는 대상 디렉토리>
+<pre><code>mc_export_shapefile [옵션들] <export 대상 marmot 경로명> <생성될 shp 파일 경로명>
   -host &ltIP 주소>: 접속 대상 marmot 서버 호스트 주소
   -port &lt포트 번호>: 접속 대상 marmot 서버 포트번호
-  -output &lt출력 shp 파일>: 생성될 shp 파일의 경로명. 본 옵션은 반드시 지정되어야 한다.
   -charset &ltcharset 이름>: 문자열 세트 이름. (default: euc-kr)
   -sample &lt샘플링 비율>: 지정된 dataset에 포함된 레코드들 중 export될 비율. (default: 1)
   -start &lt갯수>: export될 첫번째 레코드의 순번. (default: 0)
@@ -73,7 +72,7 @@
   -h: 명령어 사용법 출력
 </code></pre>
 데이터세트 `/교통/지하철/서울역사`를 shapefile로 export하려면 다음과 같다.
->`$ mc_export_shapefile /교통/지하철/서울역사 -output ~/tmp/xxx.shp`
+>`$ mc_export_shapefile /교통/지하철/서울역사 ~/tmp/xxx.shp`
 
-데이터세트 `/교통/지하철/서울역사`에서 5번째부터 14번째까지의 레코드만 utf-8 문자열 형식으로 export하려면 다음과 같다.
->`$ mc_export_shapefile /교통/지하철/서울역사 -output ~/tmp/xxx.shp -start 5 -stop 15 -charset utf-8`
+데이터세트 `/교통/지하철/서울역사`에서 5번째부터 10개의 레코드만 utf-8 문자열 형식으로 export하려면 다음과 같다.
+>`$ mc_export_shapefile /교통/지하철/서울역사 ~/tmp/xxx.shp -start 5 -count 10 -charset utf-8`
