@@ -64,7 +64,7 @@
   -charset &ltcharset 이름>: 문자열 세트 이름. (default: euc-kr)
   -sample &lt샘플링 비율>: 지정된 dataset에 포함된 레코드들 중 export될 비율. (default: 1)
   -start &lt갯수>: export될 첫번째 레코드의 순번. (default: 0)
-  -stop &lt갯수>: 마지막으로 exprot될 레코드의 순번. (default: MAX_LONG)
+  -count &lt갯수>: export될 레코드들의 최대 갯수. (default: MAX_LONG)
   -create_index: shp 파일 생성 중 공간 인덱스 생성할 경우.
   -use_seq_col: shp 파일 생성시 생성될 컬럼이름을 dataset의 해당 컬럼 이름을 사용하지 않고,
           컬럼 순번으로 컬럼 이름을 사용하게 할 경우. 컬럼 이름에 한글이 포함되는 경우 사용.
