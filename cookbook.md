@@ -6,8 +6,8 @@
 
 ## 1. RecordSet에 포함된 레코드들에 접근하는 방법 <a name="1"></a>
 주어진 RecordSet에 포함된 모든 레코드에 접근하는 방법은 두가지가 있다.
-### 1.1 `next()` 메소드를 호출하는 방법
-### 1.2 `nextCopy()` 메소드를 호출하는 방법
+### `next()` 메소드를 호출하는 방법
+### `nextCopy()` 메소드를 호출하는 방법
 
 ## 2. Shapefile을 읽어 RecordSet 객체를 만드는 방법 <a name="2"></a>
 <pre><code>import marmot.geo.geotools.ShapefileRecordSet;
