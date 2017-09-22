@@ -40,7 +40,7 @@ while ( (record = nextCopy()) != null ) {
 
 ## 2. RecordSet에 포함된 레코드들로 구성된 List를 만드는 방법 <a name="2"></a>
 <pre><code>RecordSet rset = ......;
-List<Record> list = rset.toList();
+List&ltRecord> list = rset.toList();
 
 for ( Record record: list ) {
    System.out.println(record);   // 읽은 레코드 객체 활용
