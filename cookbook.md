@@ -2,7 +2,9 @@
 
 ## Table of Contents
 * [원격에서 Marmot 서버를 접속하는 방법](#connect_marmot)
-* [RecordSet에 포함된 레코드들에 접근하는 방법](#1)
+* [Marmot 서버에 등록된 데이터세트 목록을 얻는 방법](#list_dataset_all)
+* [지정된 경로의 데이터 세트를 접근하는 방법](get_dataset)
+* [RecordSet에 포함된 레코드들에 접근하는 방법](#read_rset)
 * [RecordSet에 포함된 레코드들로 구성된 List를 만드는 방법](#2)
 * [Shapefile을 읽어 RecordSet 객체를 만드는 방법](#3)
 
@@ -24,7 +26,35 @@ RemoteMarmotConnector connector = new RemoteMarmotConnector();
 MarmotClient marmot = connector.connect(host, port);
 </code></pre>
 
-## RecordSet에 포함된 레코드들에 접근하는 방법 <a name="1"></a>
+## <a name="list_dataset_all"></a> Marmot 서버에 등록된 데이터세트 목록을 얻는 방법 
+<pre><code>import marmot.DataSet;
+
+List<DataSet> dsList = marmot.getDataSetAll();
+for ( DataSet ds: dsList ) {
+   System.out.println("DataSet name: " + ds.getId());
+   System.out.println("Schema: " + ds.getRecordSchema());
+}
+</code></pre>
+
+## <a name="get_dataset"></a> 지정된 경로의 데이터 세트를 접근하는 방법 
+<pre><code>import marmot.DataSet;
+
+try {
+   // 주어진 경로의 데이터세트가 존재하지 않는 경우는 DataSetNotFoundException 예외 발생
+   DataSet ds = marmot.getDataSet("교통/지하철/서울역사");
+}
+catch ( DataSetNotFoundException e ) {
+   System.out.println(e);
+}
+
+// 주어진 경로의 데이터세트가 존재하지 않는 경우는 null을 반환
+DataSet ds2 = marmot.getDataSetOrNull("교통/지하철/서울역사");
+if ( ds2 == null ) {
+   System.out.println("dataset not found");
+}
+</code></pre>
+
+## <a name="read_rset"></a> RecordSet에 포함된 레코드들에 접근하는 방법 
 주어진 RecordSet에 포함된 모든 레코드에 접근하는 방법은 두가지가 있다.
 
 ### `next()` 메소드를 호출하는 방법
