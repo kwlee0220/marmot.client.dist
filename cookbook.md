@@ -3,8 +3,8 @@
 ## Table of Contents
 * [원격에서 Marmot 서버를 접속하는 방법](#connect_marmot)
 * [Marmot 서버에 등록된 데이터세트 목록을 얻는 방법](#list_dataset_all)
-* [지정된 경로의 데이터 세트를 접근하는 방법](get_dataset)
-* [RecordSet에 포함된 레코드들에 접근하는 방법](#read_rset)
+* [지정된 경로의 데이터 세트를 접근하는 방법](#get_dataset)
+* [데이터 세트에 저장된 레코드세트를 접근하는 방법](#read_rset)
 * [RecordSet에 포함된 레코드들로 구성된 List를 만드는 방법](#2)
 * [Shapefile을 읽어 RecordSet 객체를 만드는 방법](#3)
 
@@ -53,8 +53,18 @@ if ( ds2 == null ) {
    System.out.println("dataset not found");
 }
 </code></pre>
+## <a name="read_rset"></a> 데이터 세트에 저장된 레코드들에 접근하는 방법
+데이터 세트에 저장된 레코드를 접근하는 방법은 데이터 세트를 읽어 레코드 세트 객체를
+얻고, 레코드 세트를 포함된 레코드를 읽는 순서를 따른다.
+먼저 데이터 세트에서 레코드 세트를 읽는 방법은 다음과 같이 `DataSet` 객체의 `read()` 메소드를 사용한다.
 
-## <a name="read_rset"></a> RecordSet에 포함된 레코드들에 접근하는 방법 
+<pre><code>import marmot.DataSet;
+import marmot.RecordSet;
+
+DataSet ds = ......;  // 데이터세트는 이미 가지고 있다고 가정
+RecordSet rset = ds.read();
+</code></pre>
+
 주어진 RecordSet에 포함된 모든 레코드에 접근하는 방법은 두가지가 있다.
 
 ### `next()` 메소드를 호출하는 방법
@@ -87,6 +97,38 @@ while ( (record = nextCopy()) != null ) {
 }
 </code></pre>
 
+###  RecordSet 활용시 주의사항
+`RecordSet`을 더 이상 사용하지 않게 되면 반드시 `close()` 메소드를 호출하여야 한다.
+그렇지 않으면 RecordSet 수행을 위해 할당된 여러 자원의 반환이 수행되지 않을 수 있다.
+`RecordSet`은 `AutoCloseable` 인터페이스를 지원하기 때문에 아래와 같이 `try` 문과 함께 사용하면
+`try` block에서 나가는 경우 자동적으로 `close()` 메소드가 호출된다.
+<pre><code>try ( RecordSet rset = ...... ) {
+   ...... // rset을 활용하는 문장들.
+}
+</code></pre>
+
+`try` 문을 사용할 수 없는 경우, `RecordSets`에서 지원하는 `autoClose()` 메소드를 사용하면
+해당 RecordSet을 끝까지 읽는 경우 자동적으로 close되도록 할 수 있다.
+<pre><code>import marmot.rset.RecordSets;
+
+RecordSet rset = ......;
+rset = RecordSets.autoClose(rset);
+
+Record record = DefaultRecord.of(rset.getRecordSchema());
+while ( rset.next(record) ) { // rset.next() 가 `false`를 반환하는 순간 자동적을 `close()`가 호출됨
+   ...
+}
+</code></pre>
+
+### `java.util.function.Consumer` 인터페이스를 통한 데이터 세트내 레코드 접근
+데이터 세트는 Consumer 인터페이스를 활용하여 데이터 세트에 저장된 레코드를 차례대로
+접근할 수 있는 인터페이스를 제공한다. 이것을 사용하면 RecordSet를 직접적으로 사용하지 않고
+저장된 모든 레코드를 접근할 수 있어, 별도로 `RecordSet.close()`를 잊지 않고 호출해야 하는
+번거로움을 해결해준다.
+<pre><code>DataSet ds = ......;  // 데이터세트는 이미 가지고 있다고 가정
+ds.apply(rset -> rset.forEach(System.out::println));
+</code></pre>
+
 ## 2. RecordSet에 포함된 레코드들로 구성된 List를 만드는 방법 <a name="2"></a>
 <pre><code>RecordSet rset = ......;
 List&ltRecord> list = rset.toList();
@@ -112,26 +154,3 @@ RecordSet rset = ShapefileRecordSet.builder()
 `charset()` 메소드를 호출하지 않는 경우는 default로 'EUC-KR' 문자열을 사용한다.
 `validate()` 메소드를 이용하여 shapefile 적재시 Geometry 객체의 유효성을 검사하도록
 할 수 있다 (기본값은 `false`임).
-
-## 2. RecordSet 사용방법
-`RecordSet`을 사용할 때, 그 사용을 마치면 반드시 `close()` 메소드를 호출하여야 한다.
-그렇지 않으면 RecordSet 객체에 할당된 여러 자원의 반환이 수행되지 않을 수 있다.
-`RecordSet`은 `AutoCloseable` 인터페이스를 지원하기 때문에 아래와 같이 `try` 문과 함께 사용하면
-`try` block에서 나가는 경우 자동적으로 `close()` 메소드가 호출된다.
-<pre><code>try ( RecordSet rset = ...... ) {
-   ...... // rset을 활용하는 문장들.
-}
-</code></pre>
-
-`try` 문을 사용할 수 없는 경우, `RecordSets`에서 지원하는 `autoClose()` 메소드를 사용하면
-해당 RecordSet을 끝까지 읽는 경우 자동적으로 close되도록 할 수 있다.
-<pre><code>import marmot.rset.RecordSets;
-
-RecordSet rset = ......;
-rset = RecordSets.autoClose(rset);
-
-Record record = DefaultRecord.of(rset.getRecordSchema());
-while ( rset.next(record) ) { // rset.next() 가 `false`를 반환하는 순간 자동적을 `close()`가 호출됨
-   ...
-}
-</code></pre>
