@@ -6,7 +6,7 @@
 * [RecordSet에 포함된 레코드들로 구성된 List를 만드는 방법](#2)
 * [Shapefile을 읽어 RecordSet 객체를 만드는 방법](#3)
 
-## 원격에서 Marmot 서버를 접속하는 방법 <a name="connect_marmot"></a>
+## <a name="connect_marmot"></a> 원격에서 Marmot 서버를 접속하는 방법
 원격에서 Marmot 서버를 접속하기 위해서는 서버가 수행되는 호스트의 IP 주소와 서버가 사용하는
 포트 번호를 사전에 알고 있어야 한다.  또한 Marmot 서버에 접속한다는 의미는
 서버 proxy에 해당하는 MarmotClient 객체를 초기화시키는 것을 의미하며 아래와 같은 방법으로
