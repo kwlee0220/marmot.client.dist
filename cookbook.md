@@ -2,10 +2,10 @@
 
 ## Table of Contents
 * [원격에서 Marmot 서버를 접속하는 방법](#connect_marmot)
-* [Marmot 서버에 등록된 데이터세트 목록을 얻는 방법](#list_dataset_all)
+* [Marmot 서버에 등록된 데이터 세트 목록을 얻는 방법](#list_dataset_all)
 * [지정된 경로의 데이터 세트를 접근하는 방법](#get_dataset)
-* [데이터 세트에 저장된 레코드세트를 접근하는 방법](#read_rset)
-* [RecordSet에 포함된 레코드들로 구성된 List를 만드는 방법](#2)
+* [데이터 세트에 저장된 레코드들을 접근하는 방법](#read_rset)
+* [RecordSet에 포함된 레코드들을 접근하는 다른 방법들](#get_record_misc)
 * [Shapefile을 읽어 RecordSet 객체를 만드는 방법](#3)
 
 ## <a name="connect_marmot"></a> 원격에서 Marmot 서버를 접속하는 방법
@@ -26,7 +26,7 @@ RemoteMarmotConnector connector = new RemoteMarmotConnector();
 MarmotClient marmot = connector.connect(host, port);
 </code></pre>
 
-## <a name="list_dataset_all"></a> Marmot 서버에 등록된 데이터세트 목록을 얻는 방법 
+## <a name="list_dataset_all"></a> Marmot 서버에 등록된 데이터 세트 목록을 얻는 방법 
 <pre><code>import marmot.DataSet;
 
 List<DataSet> dsList = marmot.getDataSetAll();
@@ -40,20 +40,20 @@ for ( DataSet ds: dsList ) {
 <pre><code>import marmot.DataSet;
 
 try {
-   // 주어진 경로의 데이터세트가 존재하지 않는 경우는 DataSetNotFoundException 예외 발생
+   // 주어진 경로의 데이터 세트가 존재하지 않는 경우는 DataSetNotFoundException 예외 발생
    DataSet ds = marmot.getDataSet("교통/지하철/서울역사");
 }
 catch ( DataSetNotFoundException e ) {
    System.out.println(e);
 }
 
-// 주어진 경로의 데이터세트가 존재하지 않는 경우는 null을 반환
+// 주어진 경로의 데이터 세트가 존재하지 않는 경우는 null을 반환
 DataSet ds2 = marmot.getDataSetOrNull("교통/지하철/서울역사");
 if ( ds2 == null ) {
    System.out.println("dataset not found");
 }
 </code></pre>
-## <a name="read_rset"></a> 데이터 세트에 저장된 레코드들에 접근하는 방법
+## <a name="read_rset"></a> 데이터 세트에 저장된 레코드들을 접근하는 방법
 데이터 세트에 저장된 레코드를 접근하는 방법은 데이터 세트를 읽어 레코드 세트 객체를
 얻고, 레코드 세트를 포함된 레코드를 읽는 순서를 따른다.
 먼저 데이터 세트에서 레코드 세트를 읽는 방법은 다음과 같이 `DataSet` 객체의 `read()` 메소드를 사용한다.
@@ -61,7 +61,7 @@ if ( ds2 == null ) {
 <pre><code>import marmot.DataSet;
 import marmot.RecordSet;
 
-DataSet ds = ......;  // 데이터세트는 이미 가지고 있다고 가정
+DataSet ds = ......;  // 데이터 세트는 이미 가지고 있다고 가정
 RecordSet rset = ds.read();
 </code></pre>
 
@@ -129,13 +129,29 @@ while ( rset.next(record) ) { // rset.next() 가 `false`를 반환하는 순간 
 ds.apply(rset -> rset.forEach(System.out::println));
 </code></pre>
 
-## 2. RecordSet에 포함된 레코드들로 구성된 List를 만드는 방법 <a name="2"></a>
+## RecordSet에 포함된 레코드들을 접근하는 다른 방법들 <a name="get_record_misc"></a>
+
+### RecordSet 에 포함된 레코드를을` java.util.List<Record>`로 변환하는 방법
 <pre><code>RecordSet rset = ......;
 List&ltRecord> list = rset.toList();
 
 for ( Record record: list ) {
    System.out.println(record);   // 읽은 레코드 객체 활용
 }
+</code></pre>
+
+### RecordSet 에 포함된 레코드를을 `java.util.stream.Stream<Record>`로 변환하는 방법
+<pre><code>RecordSet rset = ......;
+Stream&ltRecord> strm = rset.stream();
+
+strm.forEach(System.out::println);
+</code></pre>
+
+### RecordSet 에 포함된 레코드를을 `utils.stream.FStream<Record>`로 변환하는 방법
+<pre><code>RecordSet rset = ......;
+FStream&ltRecord> strm = rset.fstream();
+
+strm.forEach(System.out::println);
 </code></pre>
 
 이 방법은 RecordSet에 포함된 모든 레코드를 읽어 리스트로 만들기 때문에, 다수의 레코드로
