@@ -6,7 +6,12 @@
 * [지정된 경로의 데이터 세트를 접근하는 방법](#get_dataset)
 * [데이터 세트에 저장된 레코드들을 접근하는 방법](#read_rset)
 * [RecordSet에 포함된 레코드들을 접근하는 다른 방법들](#get_record_misc)
-* [Shapefile을 읽어 RecordSet 객체를 만드는 방법](#3)
+* [RecordSet에 포함된 레코드들을 데이터 세트에 저장하는 방법](#append_rset)
+* [데이터 세트의 경로명 변경 방법](#rename_ds)
+* [Empty 레코드 세트를 생성하는 방법](#new_empty_rset)
+* [단일 레코드로부터 레코드 세트를 생성하는 방법](#new_single_rset)
+* [List&lt;Record>에서 레코드 세트를 생성하는 방법](#new_list_rset)
+* [Shapefile을 읽어 RecordSet 객체를 만드는 방법](#shp_to_rset)
 
 ## <a name="connect_marmot"></a> 원격에서 Marmot 서버를 접속하는 방법
 원격에서 Marmot 서버를 접속하기 위해서는 서버가 수행되는 호스트의 IP 주소와 서버가 사용하는
@@ -133,7 +138,7 @@ ds.apply(rset -> rset.forEach(System.out::println));
 
 ### RecordSet 에 포함된 레코드를을` java.util.List<Record>`로 변환하는 방법
 <pre><code>RecordSet rset = ......;
-List&ltRecord> list = rset.toList();
+List&lt;Record> list = rset.toList();
 
 for ( Record record: list ) {
    System.out.println(record);   // 읽은 레코드 객체 활용
@@ -142,14 +147,14 @@ for ( Record record: list ) {
 
 ### RecordSet 에 포함된 레코드를을 `java.util.stream.Stream<Record>`로 변환하는 방법
 <pre><code>RecordSet rset = ......;
-Stream&ltRecord> strm = rset.stream();
+Stream&lt;Record> strm = rset.stream();
 
 strm.forEach(System.out::println);
 </code></pre>
 
 ### RecordSet 에 포함된 레코드를을 `utils.stream.FStream<Record>`로 변환하는 방법
 <pre><code>RecordSet rset = ......;
-FStream&ltRecord> strm = rset.fstream();
+FStream&lt;Record> strm = rset.fstream();
 
 strm.forEach(System.out::println);
 </code></pre>
@@ -157,7 +162,43 @@ strm.forEach(System.out::println);
 이 방법은 RecordSet에 포함된 모든 레코드를 읽어 리스트로 만들기 때문에, 다수의 레코드로
 구성된 RecordSet인 경우 메모리 부족 상황이 발생할 수도 있다.
 
-## 3. Shapefile을 읽어 RecordSet 객체를 만드는 방법 <a name="3"></a>
+## RecordSet에 포함된 레코드들을 데이터 세트에 저장하는 방법 <a name="append_rset"></a>
+
+데이터 세트는 레코드 세트 단위로 레코드를 저장시킬 수 있다.
+<pre><code>RecordSet rset = ......; // 레코드 세트가 이미 준비되었다고 가정함.
+DataSet ds = ......;	 // 저장 대상이 되는 데이터 세트 객체를 갖고 있다고 가정함.
+
+ds.append(rset);
+</code></pre>
+
+## 데이터 세트의 경로명 변경 방법 <a name="rename_ds"></a>
+<pre><code>DataSet ds = ......;	 // 저장 대상이 되는 데이터 세트 객체를 갖고 있다고 가정함.
+
+ds.rename("tmp/new_name");
+</code></pre>
+
+## <a name="new_empty_rset"></a>Empty 레코드 세트를 생성하는 방법
+<pre><code>import marmot.rset.RecordSets;
+
+RecordSchema schema = ......; // 생성할 레코드 세트의 스키마가 준비되었다고 가정함.
+RecordSet rset = RecordSets.empty(schema);
+</code></pre>
+
+## <a name="new_single_rset"></a> 단일 레코드로부터 레코드 세트를 생성하는 방법
+<pre><code>import marmot.rset.RecordSets;
+
+Record rec = ......;	 // 대상 레코드가 준비되었다고 가정함.
+RecordSet rset = RecordSets.from(rec);
+</code></pre>
+
+## <a name="new_list_rset"></a> List&lt;Record>에서 레코드 세트를 생성하는 방법
+<pre><code>import marmot.rset.RecordSets;
+
+List&lt;Record> recList = ......;	 // 대상 레코드 리스트가 준비되었다고 가정함.
+RecordSet rset = RecordSets.from(recList);
+</code></pre>
+
+## Shapefile을 읽어 RecordSet 객체를 만드는 방법 <a name="shp_to_rset"></a>
 <pre><code>import marmot.geo.geotools.ShapefileRecordSet;
 
 File shpFile = new File("/home/kwlee/data/xxx.shp");
