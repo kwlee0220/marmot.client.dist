@@ -12,6 +12,7 @@
 * [단일 레코드로부터 레코드 세트를 생성하는 방법](#new_single_rset)
 * [List&lt;Record>에서 레코드 세트를 생성하는 방법](#new_list_rset)
 * [Shapefile을 읽어 RecordSet 객체를 만드는 방법](#shp_to_rset)
+* [RecordSet에 포함된 레코드들을 Shapefile로 export하는 방법](#rset_to_shp)
 
 ## <a name="connect_marmot"></a> 원격에서 Marmot 서버를 접속하는 방법
 원격에서 Marmot 서버를 접속하기 위해서는 서버가 수행되는 호스트의 IP 주소와 서버가 사용하는
@@ -198,7 +199,7 @@ List&lt;Record> recList = ......;	 // 대상 레코드 리스트가 준비되었
 RecordSet rset = RecordSets.from(recList);
 </code></pre>
 
-## Shapefile을 읽어 RecordSet 객체를 만드는 방법 <a name="shp_to_rset"></a>
+## <a name="shp_to_rset"></a>Shapefile을 읽어 RecordSet 객체를 만드는 방법
 <pre><code>import marmot.geo.geotools.ShapefileRecordSet;
 
 File shpFile = new File("/home/kwlee/data/xxx.shp");
@@ -211,3 +212,17 @@ RecordSet rset = ShapefileRecordSet.builder()
 `charset()` 메소드를 호출하지 않는 경우는 default로 'EUC-KR' 문자열을 사용한다.
 `validate()` 메소드를 이용하여 shapefile 적재시 Geometry 객체의 유효성을 검사하도록
 할 수 있다 (기본값은 `false`임).
+
+## <a name="rset_to_shp"></a>RecordSet에 포함된 레코드들을 Shapefile로 export하는 방법
+<pre><code>import marmot.geo.geotools.ShapefileRecordSetWriter;
+import marmot.geo.geotools.ShapefileRecordSet;
+
+RecordSet rset = ......;	// assume 'rset' points to a RecordSet object
+ShapefileRecordSetWriter writer = ShapefileRecordSetWriter.into(OUTPUT)
+															.srid(ds.getSRID())
+															.charset("euc-kr");
+writer.write(rset);
+rset.clse();
+</code></pre>
+DataSet의 레코드들을 이용하여 shapefile을 만드는 경우는 `ShapefileRecordSetWriter::write(DataSet)`
+메소드를 사용할 수 있다.
