@@ -13,6 +13,8 @@
 * [List&lt;Record>에서 레코드 세트를 생성하는 방법](#new_list_rset)
 * [Shapefile을 읽어 RecordSet 객체를 만드는 방법](#shp_to_rset)
 * [RecordSet에 포함된 레코드들을 Shapefile로 export하는 방법](#rset_to_shp)
+* [GeoJson 파일을 읽어 주어진 경로의 DataSet를 생성하는 방법](#gjson_to_ds)
+* [DataSet을 읽어 GeoJson 파일을 생성하는 방법](#ds_to_gjson)
 
 ## <a name="connect_marmot"></a> 원격에서 Marmot 서버를 접속하는 방법
 원격에서 Marmot 서버를 접속하기 위해서는 서버가 수행되는 호스트의 IP 주소와 서버가 사용하는
@@ -219,10 +221,35 @@ import marmot.geo.geotools.ShapefileRecordSet;
 
 RecordSet rset = ......;	// assume 'rset' points to a RecordSet object
 ShapefileRecordSetWriter writer = ShapefileRecordSetWriter.into(OUTPUT)
-															.srid(ds.getSRID())
-															.charset("euc-kr");
+                                                          .srid(ds.getSRID())
+			                                  .charset("euc-kr");
 writer.write(rset);
 rset.clse();
 </code></pre>
 DataSet의 레코드들을 이용하여 shapefile을 만드는 경우는 `ShapefileRecordSetWriter::write(DataSet)`
 메소드를 사용할 수 있다.
+
+## <a name="gjson_to_ds"></a>GeoJson 파일을 읽어 주어진 경로의 DataSet를 생성하는 방법
+<pre><code>import marmot.geo.GeoJsonRecordSetReader;
+
+DataSet ds;
+File file = new File("<입력 파일 경로명>");
+String outDsPath = ......;
+
+GeoJsonRecordSetReader reader = GeoJsonRecordSetReader.from(file).srid("EPSG:5186");
+try ( GeoJsonRecordSet rset = reader.read() ) {
+    ds = marmot.createDataSet(outDsPath, rset.getRecordSchema(), "the_geom", rset.getSRID());
+    ds.append(rset);
+}
+</code></pre>
+
+## <a name="ds_to_gjson"></a> DataSet을 읽어 GeoJson 파일을 생성하는 방법
+<pre><code>import marmot.geo.GeoJsonRecordSetWriter;
+
+DataSet ds = ......;  // 대상 DataSet 객체를 이미 알고 있다고 가정함.
+String geoJsonFilePath = ......;   // 저장될 GeoJSon 파일 경로명
+
+GeoJsonRecordSetWriter.into(geoJsonFilePath)
+                                .prettyPrinter(true)
+                                .write(ds);
+</code></pre>
