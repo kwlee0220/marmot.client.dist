@@ -6,9 +6,10 @@
 
 ## 2. 클라이언트 실행파일 설치 절차
 
-GitHub에서 Marmot client 배포판을 download하여 압축을 풀고, 이때 생성된 디렉토리의
-이름을 `marmot.client.dist`로 변경한다.
-* URL 주소: `https://github.com/kwlee0220/marmot.client.dist`
+GitHub에서 Marmot client 배포판을 clone한다. 배포한을 이미 clone한 상태에서,
+새로운 update를 반영시키는 경우에는 git pull 명령을 사용한다.
+<pre><code>$ git clone https://github.com/kwlee0220/marmot.client.dist.git
+</code></pre>
 
 압축이 풀린 디렉토리의 위치는 임의의 위치이어도 무관하나, 본 문서에서는 `$HOME/marmot/marmot.client.dist`
 (windows 인 경우는 `C:\marmot\marmot.client.dist`)로 가정한다.
